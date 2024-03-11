@@ -10,19 +10,19 @@
 		},
 		{
 			"len" : 4,
-			"name" : "c1",
+			"name" : "id",
 			"offset" : 4,
 			"type" : "ints",
 			"visible" : true
 		},
 		{
 			"len" : 4,
-			"name" : "c2",
+			"name" : "name",
 			"offset" : 8,
-			"type" : "ints",
+			"type" : "chars",
 			"visible" : true
 		}
 	],
 	"indexes" : null,
-	"table_name" : "usertable"
+	"table_name" : "t"
 }
