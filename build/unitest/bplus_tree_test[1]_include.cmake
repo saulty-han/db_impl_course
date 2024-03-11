@@ -1,0 +1,5 @@
+if(EXISTS "/Users/caijiyan/Desktop/CJYsama/senior_lesson/db_senior/db_impl_course/build/unitest/bplus_tree_test[1]_tests.cmake")
+  include("/Users/caijiyan/Desktop/CJYsama/senior_lesson/db_senior/db_impl_course/build/unitest/bplus_tree_test[1]_tests.cmake")
+else()
+  add_test(bplus_tree_test_NOT_BUILT bplus_tree_test_NOT_BUILT)
+endif()

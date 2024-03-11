@@ -31,7 +31,8 @@ DefaultHandler &DefaultHandler::get_default()
 }
 
 DefaultHandler::DefaultHandler()
-{}
+{
+}
 
 DefaultHandler::~DefaultHandler() noexcept
 {
@@ -43,7 +44,8 @@ RC DefaultHandler::init(const char *base_dir)
   // 检查目录是否存在，或者创建
   std::string tmp(base_dir);
   tmp += "/db";
-  if (!common::check_directory(tmp)) {
+  if (!common::check_directory(tmp))
+  {
     LOG_ERROR("Cannot access base dir: %s. msg=%d:%s", tmp.c_str(), errno, strerror(errno));
     return RC::GENERIC_ERROR;
   }
@@ -59,7 +61,8 @@ void DefaultHandler::destroy()
 {
   sync();
 
-  for (const auto &iter : opened_dbs_) {
+  for (const auto &iter : opened_dbs_)
+  {
     delete iter.second;
   }
   opened_dbs_.clear();
@@ -67,21 +70,24 @@ void DefaultHandler::destroy()
 
 RC DefaultHandler::create_db(const char *dbname)
 {
-  if (nullptr == dbname || common::is_blank(dbname)) {
+  if (nullptr == dbname || common::is_blank(dbname))
+  {
     LOG_WARN("Invalid db name");
     return RC::INVALID_ARGUMENT;
   }
 
   // 如果对应名录已经存在，返回错误
   std::string dbpath = db_dir_ + dbname;
-  if (common::is_directory(dbpath.c_str())) {
+  if (common::is_directory(dbpath.c_str()))
+  {
     LOG_WARN("Db already exists: %s", dbname);
     return RC::SCHEMA_DB_EXIST;
   }
 
-  if (!common::check_directory(dbpath)) {
+  if (!common::check_directory(dbpath))
+  {
     LOG_ERROR("Create db fail: %s", dbpath.c_str());
-    return RC::GENERIC_ERROR;  // io error
+    return RC::GENERIC_ERROR; // io error
   }
   return RC::SUCCESS;
 }
@@ -93,24 +99,28 @@ RC DefaultHandler::drop_db(const char *dbname)
 
 RC DefaultHandler::open_db(const char *dbname)
 {
-  if (nullptr == dbname || common::is_blank(dbname)) {
+  if (nullptr == dbname || common::is_blank(dbname))
+  {
     LOG_WARN("Invalid db name");
     return RC::INVALID_ARGUMENT;
   }
 
-  if (opened_dbs_.find(dbname) != opened_dbs_.end()) {
+  if (opened_dbs_.find(dbname) != opened_dbs_.end())
+  {
     return RC::SUCCESS;
   }
 
   std::string dbpath = db_dir_ + dbname;
-  if (!common::is_directory(dbpath.c_str())) {
+  if (!common::is_directory(dbpath.c_str()))
+  {
     return RC::SCHEMA_DB_NOT_EXIST;
   }
 
   // open db
   Db *db = new Db();
   RC ret = RC::SUCCESS;
-  if ((ret = db->init(dbname, dbpath.c_str())) != RC::SUCCESS) {
+  if ((ret = db->init(dbname, dbpath.c_str())) != RC::SUCCESS)
+  {
     LOG_ERROR("Failed to open db: %s. error=%d", dbname, ret);
   }
   opened_dbs_[dbname] = db;
@@ -131,7 +141,8 @@ RC DefaultHandler::create_table(
     const char *dbname, const char *relation_name, int attribute_count, const AttrInfo *attributes)
 {
   Db *db = find_db(dbname);
-  if (db == nullptr) {
+  if (db == nullptr)
+  {
     return RC::SCHEMA_DB_NOT_OPENED;
   }
   return db->create_table(relation_name, attribute_count, attributes);
@@ -139,18 +150,24 @@ RC DefaultHandler::create_table(
 
 RC DefaultHandler::drop_table(const char *dbname, const char *relation_name)
 {
-  //TODO 查找对应的数据库
+  // TODO 查找对应的数据库
+  Db *db = find_db(dbname);
+  if (db == nullptr)
+  {
+    return RC::SCHEMA_DB_NOT_OPENED;
+  }
+  // TODO 如果数据库不存在返回错误，如果存在调用db的drop_table接口
+  return db->drop_table(relation_name);
 
-  //TODO 如果数据库不存在返回错误，如果存在调用db的drop_table接口
-
-  return RC::GENERIC_ERROR;
+  // return RC::GENERIC_ERROR;
 }
 
 RC DefaultHandler::create_index(
     Trx *trx, const char *dbname, const char *relation_name, const char *index_name, const char *attribute_name)
 {
   Table *table = find_table(dbname, relation_name);
-  if (nullptr == table) {
+  if (nullptr == table)
+  {
     return RC::SCHEMA_TABLE_NOT_EXIST;
   }
   return table->create_index(trx, index_name, attribute_name);
@@ -166,33 +183,37 @@ RC DefaultHandler::insert_record(
     Trx *trx, const char *dbname, const char *relation_name, int value_num, const Value *values)
 {
   Table *table = find_table(dbname, relation_name);
-  if (nullptr == table) {
+  if (nullptr == table)
+  {
     return RC::SCHEMA_TABLE_NOT_EXIST;
   }
 
   return table->insert_record(trx, value_num, values);
 }
 RC DefaultHandler::delete_record(Trx *trx, const char *dbname, const char *relation_name, int condition_num,
-    const Condition *conditions, int *deleted_count)
+                                 const Condition *conditions, int *deleted_count)
 {
   Table *table = find_table(dbname, relation_name);
-  if (nullptr == table) {
+  if (nullptr == table)
+  {
     return RC::SCHEMA_TABLE_NOT_EXIST;
   }
 
   CompositeConditionFilter condition_filter;
   RC rc = condition_filter.init(*table, conditions, condition_num);
-  if (rc != RC::SUCCESS) {
+  if (rc != RC::SUCCESS)
+  {
     return rc;
   }
   return table->delete_record(trx, &condition_filter, deleted_count);
 }
 
 RC DefaultHandler::update_record(Trx *trx, const char *dbname, const char *relation_name, const char *attribute_name,
-    const Value *value, int condition_num, const Condition *conditions, int *updated_count)
+                                 const Value *value, int condition_num, const Condition *conditions, int *updated_count)
 {
   Table *table = find_table(dbname, relation_name);
-  if (nullptr == table) {
+  if (nullptr == table)
+  {
     return RC::SCHEMA_TABLE_NOT_EXIST;
   }
 
@@ -202,7 +223,8 @@ RC DefaultHandler::update_record(Trx *trx, const char *dbname, const char *relat
 Db *DefaultHandler::find_db(const char *dbname) const
 {
   std::map<std::string, Db *>::const_iterator iter = opened_dbs_.find(dbname);
-  if (iter == opened_dbs_.end()) {
+  if (iter == opened_dbs_.end())
+  {
     return nullptr;
   }
   return iter->second;
@@ -210,12 +232,14 @@ Db *DefaultHandler::find_db(const char *dbname) const
 
 Table *DefaultHandler::find_table(const char *dbname, const char *table_name) const
 {
-  if (dbname == nullptr || table_name == nullptr) {
+  if (dbname == nullptr || table_name == nullptr)
+  {
     LOG_WARN("Invalid argument. dbname=%p, table_name=%p", dbname, table_name);
     return nullptr;
   }
   Db *db = find_db(dbname);
-  if (nullptr == db) {
+  if (nullptr == db)
+  {
     return nullptr;
   }
 
@@ -225,10 +249,12 @@ Table *DefaultHandler::find_table(const char *dbname, const char *table_name) co
 RC DefaultHandler::sync()
 {
   RC rc = RC::SUCCESS;
-  for (const auto &db_pair : opened_dbs_) {
+  for (const auto &db_pair : opened_dbs_)
+  {
     Db *db = db_pair.second;
     rc = db->sync();
-    if (rc != RC::SUCCESS) {
+    if (rc != RC::SUCCESS)
+    {
       LOG_ERROR("Failed to sync db. name=%s, rc=%d:%s", db->name(), rc, strrc(rc));
       return rc;
     }
