@@ -28,8 +28,9 @@ const char *ATTR_TYPE_NAME[] = {"undefined", "chars", "ints", "floats", "dates"}
 
 const char *attr_type_to_string(AttrType type)
 {
-  //TODO 修改范围，将DATES添加到type的检验中
-  if (type >= UNDEFINED && type <= FLOATS) {
+  // TODO 修改范围，将DATES添加到type的检验中
+  if (type >= UNDEFINED && type <= DATES)
+  {
     return ATTR_TYPE_NAME[type];
   }
   return "unknown";
@@ -37,8 +38,10 @@ const char *attr_type_to_string(AttrType type)
 
 AttrType attr_type_from_string(const char *s)
 {
-  for (unsigned int i = 0; i < sizeof(ATTR_TYPE_NAME) / sizeof(ATTR_TYPE_NAME[0]); i++) {
-    if (0 == strcmp(ATTR_TYPE_NAME[i], s)) {
+  for (unsigned int i = 0; i < sizeof(ATTR_TYPE_NAME) / sizeof(ATTR_TYPE_NAME[0]); i++)
+  {
+    if (0 == strcmp(ATTR_TYPE_NAME[i], s))
+    {
       return (AttrType)i;
     }
   }
@@ -46,16 +49,19 @@ AttrType attr_type_from_string(const char *s)
 }
 
 FieldMeta::FieldMeta() : attr_type_(AttrType::UNDEFINED), attr_offset_(-1), attr_len_(0), visible_(false)
-{}
+{
+}
 
 RC FieldMeta::init(const char *name, AttrType attr_type, int attr_offset, int attr_len, bool visible)
 {
-  if (common::is_blank(name)) {
+  if (common::is_blank(name))
+  {
     LOG_WARN("Name cannot be empty");
     return RC::INVALID_ARGUMENT;
   }
 
-  if (AttrType::UNDEFINED == attr_type || attr_offset < 0 || attr_len <= 0) {
+  if (AttrType::UNDEFINED == attr_type || attr_offset < 0 || attr_len <= 0)
+  {
     LOG_WARN(
         "Invalid argument. name=%s, attr_type=%d, attr_offset=%d, attr_len=%d", name, attr_type, attr_offset, attr_len);
     return RC::INVALID_ARGUMENT;
@@ -113,7 +119,8 @@ void FieldMeta::to_json(Json::Value &json_value) const
 
 RC FieldMeta::from_json(const Json::Value &json_value, FieldMeta &field)
 {
-  if (!json_value.isObject()) {
+  if (!json_value.isObject())
+  {
     LOG_ERROR("Failed to deserialize field. json is not an object. json value=%s", json_value.toStyledString().c_str());
     return RC::GENERIC_ERROR;
   }
@@ -124,30 +131,36 @@ RC FieldMeta::from_json(const Json::Value &json_value, FieldMeta &field)
   const Json::Value &len_value = json_value[FIELD_LEN];
   const Json::Value &visible_value = json_value[FIELD_VISIBLE];
 
-  if (!name_value.isString()) {
+  if (!name_value.isString())
+  {
     LOG_ERROR("Field name is not a string. json value=%s", name_value.toStyledString().c_str());
     return RC::GENERIC_ERROR;
   }
-  if (!type_value.isString()) {
+  if (!type_value.isString())
+  {
     LOG_ERROR("Field type is not a string. json value=%s", type_value.toStyledString().c_str());
     return RC::GENERIC_ERROR;
   }
 
-  if (!offset_value.isInt()) {
+  if (!offset_value.isInt())
+  {
     LOG_ERROR("Offset is not an integer. json value=%s", offset_value.toStyledString().c_str());
     return RC::GENERIC_ERROR;
   }
-  if (!len_value.isInt()) {
+  if (!len_value.isInt())
+  {
     LOG_ERROR("Len is not an integer. json value=%s", len_value.toStyledString().c_str());
     return RC::GENERIC_ERROR;
   }
-  if (!visible_value.isBool()) {
+  if (!visible_value.isBool())
+  {
     LOG_ERROR("Visible field is not a bool value. json value=%s", visible_value.toStyledString().c_str());
     return RC::GENERIC_ERROR;
   }
 
   AttrType type = attr_type_from_string(type_value.asCString());
-  if (UNDEFINED == type) {
+  if (UNDEFINED == type)
+  {
     LOG_ERROR("Got invalid field type. type=%d", type);
     return RC::GENERIC_ERROR;
   }
