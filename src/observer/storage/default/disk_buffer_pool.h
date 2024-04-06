@@ -94,7 +94,7 @@ class BPManager {
     //TODO for test
     // 1. 分配frame数组，并初始化
     frame = new Frame[BP_BUFFER_SIZE];
-    memset(frame, 0, sizeof(Frame) * BP_BUFFER_SIZE);
+    memset(frame, 0, sizeof(Frame) * BP_BUFFER_SIZE); // 一般都是0，按字节初始化
     // 2. 分配allocated数组，并初始化
     allocated = new bool[BP_BUFFER_SIZE];
     memset(allocated, 0, sizeof(bool) * BP_BUFFER_SIZE);
@@ -120,6 +120,12 @@ class BPManager {
      * 1. 如果lru cache中存在这个页，则将它返回
      * 2. 如果lru cache中不存在这个页，则返回nullptr
      */
+     BufferTag this_pair=BufferTag(file_desc,page_num);
+     if (lrucache.exists(this_pair)){
+         int v=0;
+         lrucache.get(this_pair,&v); // v指的是页
+         return &(frame[v]); // 返回指针类型 *
+     }
     
     return nullptr;
   }
@@ -129,8 +135,8 @@ class BPManager {
      * @todo
      * 返回frame数组
      */
-
-    return nullptr;
+      return frame;
+//    return nullptr;
   }
 
   bool *getAllocated() {
@@ -138,8 +144,9 @@ class BPManager {
      * @todo
      * 返回allocated数组
      */
+      return allocated;
 
-    return nullptr;
+//    return nullptr;
   }
   
   void printLruCache();

@@ -52,8 +52,38 @@ Frame *BPManager::alloc(int file_desc, PageNum page_num) {
    * 提示：调用disk_buffer_pool->flush_block()来刷新到磁盘
    * 提示：调用lrucache.victim(victim, new_buffer_tag) 来将vitim页给替换了。
    */
-  
-  return nullptr;
+   if (lrucache.size()<size){
+       for (int i=0;i<size;i++){ // 找到第一个没有分配的allocate i
+           if (!allocated[i]){ // 第一个没有分配的
+               allocated[i]= true;
+               lrucache.put(BufferTag(file_desc,page_num),i);
+               return &(frame[i]);
+           }
+       }
+   } else{
+       BufferTag victim; // key_t 是pair
+       BufferTag new_k=BufferTag(file_desc,page_num);
+       // 获取替换key
+       if (lrucache.getVictim(&victim,not_pinned,(void*)(this))!=RC::SUCCESS){
+           return nullptr;
+       }
+       // 获取替换key的value
+       int v;
+       if (lrucache.get(victim,&v)!=RC::SUCCESS){
+           return nullptr;
+       }
+       // 将这个页刷到磁盘
+       Frame *victim_frame=&(frame[v]);
+       if (disk_buffer_pool->flush_block(victim_frame)!=RC::SUCCESS){
+           return nullptr;
+       }
+       // victim 替换
+       if(lrucache.victim(victim,new_k)!=RC::SUCCESS){
+           return nullptr;
+       }
+       return victim_frame;
+   }
+//  return nullptr;
 }
 
 void BPManager::printLruCache() {

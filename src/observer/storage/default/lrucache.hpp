@@ -55,6 +55,18 @@ namespace cache {
            *    2.1 如果lru cache已经达到最大容量，则返回RC::BUFFERPOOL_NOBUF
            *    2.2 如果没有达到最大容量，则在_cache_items_list和_cache_items_map中插入新的
            */
+           if (exists(key)){ // 直接修改，不会超量
+            _cache_items_list.erase(_cache_items_map[key]);
+            _cache_items_list.push_front(key_value_pair_t(key,value));
+            _cache_items_map[key]=_cache_items_list.begin();
+           } else{ // 可能超
+               if (size()>=_max_size){
+                   return RC::BUFFERPOOL_NOBUF;
+               } else{
+                   _cache_items_list.push_front(key_value_pair_t(key,value));
+                   _cache_items_map[key]=_cache_items_list.begin();
+               }
+           }
 
           return RC::SUCCESS;
         }
@@ -66,6 +78,15 @@ namespace cache {
            * 2. 如果页存在，将key对应的key-value对移动到_cache_items_list的头部，并更新_cache_items_map
            *    将res_value设置为结果value。返回RC::SUCCESS
            */
+           if (exists(key)){
+               return RC::NOTFOUND;
+           } else{
+               value_t v=_cache_items_map[key]->second; // 索引key到键值对的iterator，然后first 键 second 值
+               *res_value=v;
+               _cache_items_list.erase(_cache_items_map[key]);
+               _cache_items_list.push_front(key_value_pair_t(key,v)); // (key_value_pair_t(key,v))
+               _cache_items_map[key]=_cache_items_list.begin();
+           }
 
           return RC::SUCCESS;
         }
@@ -76,6 +97,10 @@ namespace cache {
            * key存在，返回 true
            * key不存在，返回 false
            */
+           auto iter=_cache_items_map.find(key);
+           if (iter!=_cache_items_map.end()){
+               return true;
+           }
 
           return false;
         }
@@ -85,8 +110,8 @@ namespace cache {
            * @todo
            * 返回LRU cache size
            */
-          
-          return 0;
+            return  _cache_items_list.size();
+//          return 0;
         }
 
         RC getVictim(key_t *vic_key, bool (*check)(const key_value_pair_t& kv, void *ctx), void *ctx) const {
@@ -99,6 +124,8 @@ namespace cache {
                * 被驱逐的项目应该满足check条件，check条件一般是: frame的Pin count为0.
                * 2. 返回 RC::SUCCESS
                */
+               *vic_key=it->first;
+                return RC::SUCCESS;
             }
           }
           return RC::NOTFOUND;
@@ -113,13 +140,22 @@ namespace cache {
            * 
            * 比如old_key是4，它的value是40, new_key是5，则删除{4, 40}，建立{5, 40}
            */
-          
+           if(!exists(old_key)){
+               return RC::NOTFOUND;
+           } else{
+               value_t res_value;
+               get(old_key,&res_value); // 获取old值
+               _cache_items_list.erase(_cache_items_map[old_key]);
+               _cache_items_map.erase(old_key);
+               _cache_items_list.push_front(key_value_pair_t(new_key,res_value));
+               _cache_items_map[new_key]=_cache_items_list.begin();
+           }
           return RC::SUCCESS;
         }
 
     public:
-        std::list<key_value_pair_t> _cache_items_list;
-        std::unordered_map<key_t, list_iterator_t, hashfunc> _cache_items_map;
+        std::list<key_value_pair_t> _cache_items_list; // 双向链表
+        std::unordered_map<key_t, list_iterator_t, hashfunc> _cache_items_map; // 键是正常的，值是list迭代器
         size_t _max_size;
     };
 
