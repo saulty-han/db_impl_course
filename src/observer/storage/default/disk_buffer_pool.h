@@ -122,7 +122,7 @@ class BPManager {
      */
      BufferTag this_pair=BufferTag(file_desc,page_num);
      if (lrucache.exists(this_pair)){
-         int v=0;
+         int v;
          lrucache.get(this_pair,&v); // v指的是页
          return &(frame[v]); // 返回指针类型 *
      }

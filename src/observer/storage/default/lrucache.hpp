@@ -46,16 +46,19 @@ namespace cache {
                 _max_size(max_size) {
         }
 
+
         RC put(const key_t& key, const value_t& value) {
-          /** 
-           * @todo 
+          /**
+           * @todo
            * 1. 如果key在lru cache中存在，则需要用新的key-value替换_cache_items_list和_cache_items_map中旧的
            *    然后返回RC::SUCCESS
            * 2. 如果key不在lru cache中，则
            *    2.1 如果lru cache已经达到最大容量，则返回RC::BUFFERPOOL_NOBUF
            *    2.2 如果没有达到最大容量，则在_cache_items_list和_cache_items_map中插入新的
            */
-           if (exists(key)){ // 直接修改，不会超量
+          auto it_old = _cache_items_map.find(key);
+          if(it_old != _cache_items_map.end()){  // 直接修改，不会超量
+//           if (exists(key)){
             _cache_items_list.erase(_cache_items_map[key]);
             _cache_items_list.push_front(key_value_pair_t(key,value));
             _cache_items_map[key]=_cache_items_list.begin();
@@ -72,13 +75,15 @@ namespace cache {
         }
 
         RC get(const key_t& key, value_t* res_value) {
-          /** 
+          /**
            * @todo
            * 1. 如果页不存在，返回RC::NOTFOUND
            * 2. 如果页存在，将key对应的key-value对移动到_cache_items_list的头部，并更新_cache_items_map
            *    将res_value设置为结果value。返回RC::SUCCESS
            */
-           if (exists(key)){
+          auto it_old = _cache_items_map.find(key);
+          if(it_old == _cache_items_map.end()){
+//           if (!exists(key)){
                return RC::NOTFOUND;
            } else{
                value_t v=_cache_items_map[key]->second; // 索引key到键值对的iterator，然后first 键 second 值
@@ -106,7 +111,7 @@ namespace cache {
         }
 
         size_t size() const {
-          /** 
+          /**
            * @todo
            * 返回LRU cache size
            */
@@ -115,7 +120,7 @@ namespace cache {
         }
 
         RC getVictim(key_t *vic_key, bool (*check)(const key_value_pair_t& kv, void *ctx), void *ctx) const {
-          
+
           for (auto it = _cache_items_list.rbegin(); it != _cache_items_list.rend(); it++) {
             if (check(*it, ctx)) {
               /**
@@ -132,16 +137,17 @@ namespace cache {
         }
 
         RC victim(key_t old_key, key_t new_key) {
-          /** 
+          /**
            * @todo
            * 1. 如果old_key不存在，返回RC::NOTFOUND
            * 2. 将old_key删除，并将new_key和old_key对应的value插入到lrucache中，更新_cache_items_list和_cache_items_map
            *    调用者必须保证old_key是存在的。返回RC::SUCCESS
-           * 
+           *
            * 比如old_key是4，它的value是40, new_key是5，则删除{4, 40}，建立{5, 40}
            */
-           if(!exists(old_key)){
-               return RC::NOTFOUND;
+          auto it_old = _cache_items_map.find(old_key);
+          if(it_old == _cache_items_map.end()){
+              return RC::NOTFOUND;
            } else{
                value_t res_value;
                get(old_key,&res_value); // 获取old值

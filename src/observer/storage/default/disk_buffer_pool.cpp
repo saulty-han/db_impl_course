@@ -60,6 +60,7 @@ Frame *BPManager::alloc(int file_desc, PageNum page_num) {
                return &(frame[i]);
            }
        }
+       return nullptr;
    } else{
        BufferTag victim; // key_t 是pair
        BufferTag new_k=BufferTag(file_desc,page_num);
