@@ -1,0 +1,413 @@
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: init.cpp init 205]>>Output configuration 
+Begin dump configuration
+[]
+
+[DefaultStorageStage]
+BaseDir=./miniob
+SystemDb=sys
+ThreadId=IOThreads
+
+[DefaultThreads]
+count=3
+
+[ExecuteStage]
+NextStages=DefaultStorageStage,MemStorageStage
+ThreadId=SQLThreads
+
+[IOThreads]
+count=3
+
+[LOG]
+LOG_CONSOLE_LEVEL=1
+LOG_FILE_LEVEL=3
+LOG_FILE_NAME=observer.log
+
+[MemStorageStage]
+ThreadId=IOThreads
+
+[MetricsStage]
+NextStages=TimerStage
+
+[NET]
+CLIENT_ADDRESS=INADDR_ANY
+MAX_CONNECTION_NUM=8192
+PORT=6789
+
+[OptimizeStage]
+NextStages=ExecuteStage
+ThreadId=SQLThreads
+
+[ParseStage]
+NextStages=OptimizeStage
+ThreadId=SQLThreads
+
+[PlanCacheStage]
+NextStages=ExecuteStage,ParseStage
+ThreadId=SQLThreads
+
+[QueryCacheStage]
+NextStages=PlanCacheStage
+ThreadId=SQLThreads
+
+[ResolveStage]
+NextStages=QueryCacheStage
+ThreadId=SQLThreads
+
+[SEDA_BASE]
+EventHistory=false
+MaxEventHistoryNum=100
+STAGES=SessionStage,ExecuteStage,OptimizeStage,ParseStage,ResolveStage,PlanCacheStage,QueryCacheStage,DefaultStorageStage,MemStorageStage,TimerStage,MetricsStage
+ThreadPools=SQLThre
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: init.cpp init_seda 63]>>(Re)Starting State: Pid: 79409 Time: Tue Apr  9 17:36:37 2024
+
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: init.cpp init_seda 64]>>The process Name is observer
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_event_history 209]>>Successfully init_event_history, EventHistory:0, MaxEventHops:100
+[2024-4-9 17:36:37 pid:79409 tid:16d83b000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16d83b000, threadname = SQLThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16db83000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16db83000, threadname = DefaultThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16dc9b000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16dc9b000, threadname = DefaultThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16d953000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16d953000, threadname = SQLThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16dc0f000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16dc0f000, threadname = DefaultThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16d8c7000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16d8c7000, threadname = SQLThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16da6b000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16da6b000, threadname = IOThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16daf7000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16daf7000, threadname = IOThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:16d9df000  INFO: thread_pool.cpp run_thread 258]>>threadid = 16d9df000, threadname = IOThreads
+
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage SessionStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage ExecuteStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage OptimizeStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage ParseStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage ResolveStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage PlanCacheStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage QueryCacheStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: default_storage_stage.cpp set_properties 89]>>Use sys as system db
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: default_handler.cpp init 52]>>Default handler init with ./miniob success
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  WARNNING: default_handler.cpp create_db 74]>>Db already exists: sys
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=__trx
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=__trx
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c1
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c2
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/table5.data.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/table5.data. file_id=0, hdr_frame=0x120008000
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: db.cpp open_all_tables 121]>>Open table: table5, file: table5.table
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=__trx
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c1
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c2
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/table1.data.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/table1.data. file_id=1, hdr_frame=0x120009018
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: db.cpp open_all_tables 121]>>Open table: table1, file: table1.table
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=__trx
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c1
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c2
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/table3.data.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/table3.data. file_id=2, hdr_frame=0x12000a030
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: db.cpp open_all_tables 121]>>Open table: table3, file: table3.table
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=__trx
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c1
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c2
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/table4.data.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/table4.data. file_id=3, hdr_frame=0x12000b048
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: db.cpp open_all_tables 121]>>Open table: table4, file: table4.table
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=__trx
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c1
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: field_meta.cpp init 70]>>Init a field with name=c2
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/table2.data.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/table2.data. file_id=4, hdr_frame=0x12000c060
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: db.cpp open_all_tables 121]>>Open table: table2, file: table2.table
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: db.cpp open_all_tables 124]>>All table have been opened. num=5
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: default_storage_stage.cpp set_properties 113]>>Open system db success: sys
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage DefaultStorageStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage MemStorageStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp get_thread_pool 296]>>Not set thread_pool_id for TimerStage, use default threadpool DefaultThreads
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage TimerStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp get_thread_pool 296]>>Not set thread_pool_id for MetricsStage, use default threadpool DefaultThreads
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: seda_config.cpp init_stages 354]>>Stage MetricsStage use threadpool DefaultThreads.
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: metrics_registry.cpp register_metric 37]>>Successfully register metric :DefaultStorageStage.query
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: metrics_registry.cpp register_metric 37]>>Successfully register metric :SessionStage.sql
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: init.cpp init 229]>>Successfully init utility
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: metrics_registry.cpp register_metric 37]>>Successfully register metric :SessionStage.readsocket
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: metrics_registry.cpp register_metric 37]>>Successfully register metric :SessionStage.writesocket
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: server.cpp start_tcp_server 333]>>Listen on port 6789
+[2024-4-9 17:36:37 pid:79409 tid:1e3f35b40  INFO: server.cpp start_tcp_server 352]>>Observer start success
+[2024-4-9 17:36:45 pid:79409 tid:1e3f35b40  INFO: server.cpp accept 278]>>Accepted connection from 127.0.0.1:3306
+
+[2024-4-9 17:37:21 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=35): create table t1(id int, sex int);
+
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: table.cpp create 56]>>Begin to create table ./miniob/db/sys:t1
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: field_meta.cpp init 70]>>Init a field with name=id
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: field_meta.cpp init 70]>>Init a field with name=sex
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: table_meta.cpp init 105]>>Init table meta success. table name=t1
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: disk_buffer_pool.cpp create_file 78]>>Successfully create ./miniob/db/sys/t1.data.
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/t1.data.
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/t1.data. file_id=5, hdr_frame=0x12000d078
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: table.cpp create 117]>>Successfully create table ./miniob/db/sys:t1
+[2024-4-9 17:37:21 pid:79409 tid:16dc0f000  INFO: db.cpp create_table 68]>>Create table success. table name=t1
+[2024-4-9 17:37:34 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=35): create table t2(id int, age int);
+
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: table.cpp create 56]>>Begin to create table ./miniob/db/sys:t2
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: field_meta.cpp init 70]>>Init a field with name=id
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: field_meta.cpp init 70]>>Init a field with name=age
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: table_meta.cpp init 105]>>Init table meta success. table name=t2
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: disk_buffer_pool.cpp create_file 78]>>Successfully create ./miniob/db/sys/t2.data.
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/t2.data.
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/t2.data. file_id=6, hdr_frame=0x12000e090
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: table.cpp create 117]>>Successfully create table ./miniob/db/sys:t2
+[2024-4-9 17:37:34 pid:79409 tid:16db83000  INFO: db.cpp create_table 68]>>Create table success. table name=t2
+[2024-4-9 17:37:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0.5,tps:0.0333333
+[2024-4-9 17:37:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0333333
+[2024-4-9 17:37:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0.5,tps:0.0333333
+[2024-4-9 17:37:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0666667
+[2024-4-9 17:38:31 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=38): create table t3(id int, salary int);
+
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: table.cpp create 56]>>Begin to create table ./miniob/db/sys:t3
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: field_meta.cpp init 70]>>Init a field with name=id
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: field_meta.cpp init 70]>>Init a field with name=salary
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: table_meta.cpp init 105]>>Init table meta success. table name=t3
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: disk_buffer_pool.cpp create_file 78]>>Successfully create ./miniob/db/sys/t3.data.
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: disk_buffer_pool.cpp open_file 108]>>Successfully open file ./miniob/db/sys/t3.data.
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: disk_buffer_pool.cpp open_file 150]>>Successfully open ./miniob/db/sys/t3.data. file_id=7, hdr_frame=0x12000f0a8
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: table.cpp create 117]>>Successfully create table ./miniob/db/sys:t3
+[2024-4-9 17:38:31 pid:79409 tid:16dc0f000  INFO: db.cpp create_table 68]>>Create table success. table name=t3
+[2024-4-9 17:38:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:2,tps:0.0166667
+[2024-4-9 17:38:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0166667
+[2024-4-9 17:38:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:2,tps:0.0166667
+[2024-4-9 17:38:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0333333
+[2024-4-9 17:39:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:39:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:39:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:39:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:39:49 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=14): show tables;
+
+[2024-4-9 17:40:17 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=3): l
+
+[2024-4-9 17:40:17 pid:79409 tid:16db83000  WARNNING: parse_stage.cpp handle_request 127]>>Failed to parse sql: l
+, error msg: Unknown error
+
+[2024-4-9 17:40:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0.0166667
+[2024-4-9 17:40:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0333333
+[2024-4-9 17:40:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0333333
+[2024-4-9 17:40:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0666667
+[2024-4-9 17:40:47 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=33): selselect t1.*,t2.* from t1,t2;
+
+[2024-4-9 17:40:47 pid:79409 tid:16dc0f000  WARNNING: parse_stage.cpp handle_request 127]>>Failed to parse sql: selselect t1.*,t2.* from t1,t2;
+, error msg: Unknown error
+
+[2024-4-9 17:40:56 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=31): jselect t1.*,t2.* from t1,t2;
+
+[2024-4-9 17:40:56 pid:79409 tid:16db83000  WARNNING: parse_stage.cpp handle_request 127]>>Failed to parse sql: jselect t1.*,t2.* from t1,t2;
+, error msg: Unknown error
+
+[2024-4-9 17:41:9 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=31): jselect t1.*,t2.* from t1,t2;
+
+[2024-4-9 17:41:9 pid:79409 tid:16dc9b000  WARNNING: parse_stage.cpp handle_request 127]>>Failed to parse sql: jselect t1.*,t2.* from t1,t2;
+, error msg: Unknown error
+
+[2024-4-9 17:41:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:41:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.05
+[2024-4-9 17:41:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.05
+[2024-4-9 17:41:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.1
+[2024-4-9 17:41:47 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=30): select t1.*,t2.* from t1,t2;
+
+[2024-4-9 17:42:36 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=32): select t1.id,t2.id from t1,t2;
+
+[2024-4-9 17:42:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:42:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0333333
+[2024-4-9 17:42:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0333333
+[2024-4-9 17:42:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0666667
+[2024-4-9 17:43:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:43:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:43:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:43:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:44:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:44:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:44:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:44:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:45:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:45:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:45:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:45:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:46:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:46:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:46:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:46:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:47:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:47:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:47:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:47:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:48:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:48:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:48:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:48:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:49:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:49:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:49:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:49:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:50:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:50:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:50:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:50:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:51:18 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=29): insert into t1 values(1,0);
+
+[2024-4-9 17:51:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0.0166667
+[2024-4-9 17:51:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0166667
+[2024-4-9 17:51:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0166667
+[2024-4-9 17:51:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0333333
+[2024-4-9 17:51:55 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=29): insert into t1 values(2,1);
+
+[2024-4-9 17:52:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0.0166667
+[2024-4-9 17:52:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0166667
+[2024-4-9 17:52:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0166667
+[2024-4-9 17:52:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0333333
+[2024-4-9 17:53:7 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=29): insert into t2 values(1,9);
+
+[2024-4-9 17:53:23 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=30): insert into t2 values(2,11);
+
+[2024-4-9 17:53:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0.0333333
+[2024-4-9 17:53:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0333333
+[2024-4-9 17:53:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0333333
+[2024-4-9 17:53:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0666667
+[2024-4-9 17:53:54 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=32): insert into t3 values(1,1000);
+
+[2024-4-9 17:54:7 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=32): insert into t3 values(2,2000);
+
+[2024-4-9 17:54:37 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=30): select t1.*,t2.* from t1,t2;
+
+[2024-4-9 17:54:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0.0333333
+[2024-4-9 17:54:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.05
+[2024-4-9 17:54:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.05
+[2024-4-9 17:54:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.1
+[2024-4-9 17:55:7 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=32): select t1.id,t2.id from t1,t2;
+
+[2024-4-9 17:55:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:55:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0166667
+[2024-4-9 17:55:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0166667
+[2024-4-9 17:55:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0333333
+[2024-4-9 17:56:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:56:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:56:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:56:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 17:56:50 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=22): select * from t1,t2;
+
+[2024-4-9 17:57:34 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=54): select * from t1,t2 where t1.id=t2.id and t2.age>10;
+
+[2024-4-9 17:57:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:57:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0333333
+[2024-4-9 17:57:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0333333
+[2024-4-9 17:57:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0666667
+[2024-4-9 17:58:0 pid:79409 tid:1e3f35b40  INFO: server.cpp recv 171]>>receive command(size=25): select * from t1,t2,t3;
+
+[2024-4-9 17:58:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:58:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0.0166667
+[2024-4-9 17:58:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0.0166667
+[2024-4-9 17:58:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0.0333333
+[2024-4-9 17:59:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 17:59:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 17:59:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 17:59:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 18:0:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 18:0:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 18:0:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 18:0:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 18:1:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 18:1:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 18:1:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 18:1:37 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 18:2:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 18:2:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 18:2:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 18:2:37 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 18:3:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 18:3:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 18:3:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 18:3:37 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 18:22:15 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 18:22:15 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 18:22:15 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 18:22:15 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 18:38:32 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 18:38:32 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 18:38:32 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 18:38:32 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 18:54:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 18:54:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 18:54:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 18:54:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 19:10:35 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 19:10:35 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 19:10:35 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 19:10:35 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 19:25:55 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 19:25:55 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 19:25:55 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 19:25:55 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 19:42:50 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 19:42:50 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 19:42:50 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 19:42:50 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 20:0:49 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 20:0:49 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 20:0:49 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 20:0:49 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 20:16:34 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 20:16:34 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 20:16:34 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 20:16:34 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 20:33:23 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 20:33:23 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 20:33:23 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 20:33:23 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 20:50:39 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 20:50:39 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 20:50:39 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 20:50:39 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 21:5:46 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 21:5:46 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 21:5:46 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 21:5:46 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 21:21:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 21:21:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 21:21:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 21:21:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 21:38:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 21:38:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 21:38:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 21:38:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 21:55:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 21:55:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 21:55:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 21:55:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 22:12:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 22:12:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 22:12:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 22:12:29 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 22:28:53 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 22:28:53 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 22:28:53 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 22:28:53 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 22:44:42 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 22:44:42 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 22:44:42 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 22:44:42 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 23:1:43 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 23:1:43 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 23:1:43 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 23:1:43 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 23:17:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 23:17:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 23:17:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 23:17:6 pid:79409 tid:16dc0f000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 23:34:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 23:34:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 23:34:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 23:34:12 pid:79409 tid:16db83000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0
+[2024-4-9 23:51:39 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>DefaultStorageStage.query:mean:0,tps:0
+[2024-4-9 23:51:39 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.readsocket:mean:0,tps:0
+[2024-4-9 23:51:39 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.sql:mean:0,tps:0
+[2024-4-9 23:51:39 pid:79409 tid:16dc9b000  INFO: log_reporter.cpp report 36]>>SessionStage.writesocket:mean:0,tps:0

@@ -1,0 +1,5 @@
+if(EXISTS "/Users/caijiyan/Desktop/CJYsama/senior_lesson/db_senior/db_impl_course/build/unitest/bp_manager_test[1]_tests.cmake")
+  include("/Users/caijiyan/Desktop/CJYsama/senior_lesson/db_senior/db_impl_course/build/unitest/bp_manager_test[1]_tests.cmake")
+else()
+  add_test(bp_manager_test_NOT_BUILT bp_manager_test_NOT_BUILT)
+endif()

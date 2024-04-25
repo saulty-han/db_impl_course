@@ -219,7 +219,33 @@ bool match_join_condition(const Tuple *res_tuple,
   // condition_idxs 是 C x 3 数组
   // 每一条的3个元素代表（左值的属性在新schema的下标，CompOp运算符，右值的属性在新schema的下标）
   //TODO 判断表中某一行 res_tuple 是否满足多表联查条件即：左值=右值
-
+  bool flag= true;
+  for (auto condition_idx : condition_idxs){
+      int res=res_tuple->get(condition_idx[0]).compare(res_tuple->get(condition_idx[2]));
+      switch (condition_idx[1]) {
+          case 0:
+              flag=(res==0);
+              break;
+          case 1:
+              flag = (res<=0);
+              break;
+          case 2:
+              flag = (res!=0);
+              break;
+          case 3:
+              flag = (res<0);
+              break;
+          case 4:
+              flag = (res>=0);
+              break;
+          case 5:
+              flag = (res>0);
+              break;
+      }
+      if(!flag){
+          return false;
+      }
+  }
   return true;
 }
 
@@ -227,10 +253,25 @@ bool match_join_condition(const Tuple *res_tuple,
 Tuple merge_tuples(
     const std::vector<std::vector<Tuple>::const_iterator> temp_tuples,
     std::vector<int> orders) {
-  std::vector<std::shared_ptr<TupleValue>> temp_res;
+  std::vector<std::shared_ptr<TupleValue>> temp_res; // 内容跟res一样的，只不过顺序不一样
   Tuple res_tuple;
   //TODO 先把每个字段都放到对应的位置上(temp_res)
   //TODO 再依次(orders)添加到大元组(res_tuple)里即可
+  for (int i=0;i<temp_tuples.size();i++){
+    const auto& temp_tuple=*temp_tuples[i];
+    const auto& temp_values=temp_tuple.values();
+    for (int j=0;j<temp_values.size();j++){
+        temp_res.push_back(temp_values[j]);
+    }
+  }
+  for (int i=0;i<orders.size();i++){
+      for(int j=0;j<orders.size();j++){
+          if (orders[j]==i){
+              res_tuple.add(temp_res[j]);
+          }
+      }
+  }
+  return res_tuple;
 }
 
 // 这里没有对输入的某些信息做合法性校验，比如查询的列名、where条件中的列名等，没有做必要的合法性校验
@@ -286,7 +327,7 @@ RC ExecuteStage::do_select(const char *db, const Query *sql,
   if (tuple_sets.size() > 1) {
     // 本次查询了多张表，需要做join操作
     TupleSchema join_schema;
-    TupleSchema old_schema;
+    TupleSchema old_schema;  // 所有的笛卡尔积
     for (std::vector<TupleSet>::const_reverse_iterator
                  rit = tuple_sets.rbegin(),
                  rend = tuple_sets.rend();
@@ -301,6 +342,36 @@ RC ExecuteStage::do_select(const char *db, const Query *sql,
     // 如果是select * ，添加所有字段
     // 如果是select t1.*，表名匹配的加入字段
     // 如果是select t1.age，表名+字段名匹配的加入字段
+    // 每个表的一个属性在old_schema里面都是一个field，按顺序来
+    for (int i=0;i<selects.attr_num;i++){  // 几种属性数量分类
+        const RelAttr &this_attri=selects.attributes[i];
+        if (this_attri.attribute_name!= nullptr){
+            // * 应该只出现一次吧
+            if (strcmp(this_attri.attribute_name,"*")==0){
+                std::vector<TupleField> this_fields=old_schema.fields(); // 里面包含所有的表
+                // select *
+                if (this_attri.relation_name== nullptr){
+                    join_schema=old_schema; // 直接一样
+                    for (int j=0;j<this_fields.size();j++){
+                        select_order.push_back(j);
+                    }
+                } else{ // select table.*
+                    for (int j=0;j<this_fields.size();j++){
+                        TupleField otherfield=this_fields[j]; // 当前的其他表的一列，每次只有一个
+                        if(strcmp(this_attri.relation_name,otherfield.table_name())==0){
+                            select_order.push_back(j);
+                            join_schema.add(otherfield);
+                        }
+                    }
+                }
+            }else{  // table.attri，只加一个
+                int idx=old_schema.index_of_field(this_attri.relation_name,this_attri.attribute_name);
+                select_order.push_back(idx);
+                TupleField otherfield=old_schema.field(idx);
+                join_schema.add(otherfield.type(),otherfield.table_name(),otherfield.field_name());
+            }
+        }
+    }
     print_tuples.set_schema(join_schema);
 
     // 构建联查的conditions需要找到对应的表
@@ -327,6 +398,56 @@ RC ExecuteStage::do_select(const char *db, const Query *sql,
     }
     //TODO 元组的拼接需要实现笛卡尔积
     //TODO 将符合连接条件的元组添加到print_tables中
+      std::vector<std::vector<Tuple>::const_iterator> dikaer_set;
+      for(std::vector<TupleSet>::const_reverse_iterator
+                  it=tuple_sets.rbegin(),
+                  iend=tuple_sets.rend();
+          it!=iend;it++){
+          dikaer_set.push_back(it->tuples().begin());
+          dikaer_set.push_back(it->tuples().end());
+      }
+      std::vector<std::vector<Tuple>::const_iterator> temp_tuples;
+      temp_tuples.clear();
+      if(dikaer_set.size()==4){
+          auto t1_begin = dikaer_set[0];
+          auto t1_end = dikaer_set[1];
+          auto t2_begin = dikaer_set[2];
+          auto t2_end = dikaer_set[3];
+          for(t1_begin=dikaer_set[0];t1_begin!=t1_end;t1_begin++){
+              for(t2_begin=dikaer_set[2];t2_begin!=t2_end;t2_begin++){
+                  temp_tuples.clear();
+                  temp_tuples.push_back(t1_begin);
+                  temp_tuples.push_back(t2_begin);
+                  Tuple res_tuple = merge_tuples(temp_tuples,select_order);
+                  if(match_join_condition(&res_tuple,condition_idxs)){
+                      print_tuples.add(std::move(res_tuple));
+                  }
+              }
+          }
+      }
+      if(dikaer_set.size()==6){
+          auto t1_begin = dikaer_set[0];
+          auto t1_end = dikaer_set[1];
+          auto t2_begin = dikaer_set[2];
+          auto t2_end = dikaer_set[3];
+          auto t3_begin = dikaer_set[4];
+          auto t3_end = dikaer_set[5];
+          for(t1_begin=dikaer_set[0];t1_begin!=t1_end;t1_begin++){
+              for(t2_begin=dikaer_set[2];t2_begin!=t2_end;t2_begin++){
+                  for(t3_begin=dikaer_set[4];t3_begin!=t3_end;t3_begin++){
+                      temp_tuples.clear();
+                      temp_tuples.push_back(t1_begin);
+                      temp_tuples.push_back(t2_begin);
+                      temp_tuples.push_back(t3_begin);
+                      Tuple res_tuple = merge_tuples(temp_tuples,select_order);
+                      if(match_join_condition(&res_tuple,condition_idxs)){
+                          print_tuples.add(std::move(res_tuple));
+                      }
+                  }
+              }
+          }
+      }
+
 
       print_tuples.print(ss);
     } else {
